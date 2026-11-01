@@ -18,14 +18,17 @@ if(process.env.DATABASE_URL){
   update:async(id,o,t,d,n)=>db.prepare('UPDATE items SET data=?,updated=? WHERE id=? AND owner=? AND type=?').run(d,n,id,o,t).changes,
   del:async(id,o)=>await store.del(id,o),ping:async()=>1};
 }
-let podCache={t:0,d:null};
+let podCache={t:0,d:null};const dzCache={};const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+async function deezer(t){if(dzCache[t])return dzCache[t];let u='https://www.deezer.com/fr/search/'+encodeURIComponent(t)+'/show';
+ try{const j=await (await fetch('https://api.deezer.com/search/podcast?q='+encodeURIComponent(t))).json();const d=j.data||[];const h=d.find(x=>norm(x.title)==norm(t))||d.find(x=>norm(x.title).includes(norm(t))||norm(t).includes(norm(x.title)));if(h){u='https://www.deezer.com/fr/show/'+h.id;dzCache[t]=u}}catch(e){}return u}
 async function podTrends(){if(podCache.d&&Date.now()-podCache.t<6*3600e3)return podCache.d;
  const r=await fetch('https://rss.marketingtools.apple.com/api/v2/fr/podcasts/top/15/podcasts.json');if(!r.ok)throw new Error(r.status);const j=await r.json();
  const items=j.feed.results.map((x,i)=>({rang:i+1,titre:x.name,sous:x.artistName+' · '+(x.genres||[]).map(g=>g.name).slice(0,2).join(', '),cover:(x.artworkUrl100||'').replace('100x100bb','400x400bb'),lien:x.url}));
+ for(const it of items)it.deezer=await deezer(it.titre);
  podCache={t:Date.now(),d:{maj:new Date(j.feed.updated).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}),items}};return podCache.d}
 const PORT=process.env.PORT||8080, PUB=path.join(__dirname,'public');
 const TYPES=['journal','reves','planning','plats','recettes','taches','livres','films','podcasts'];
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.apk':'application/vnd.android.package-archive','.json':'application/json','.png':'image/png'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.apk':'application/vnd.android.package-archive','.json':'application/json','.png':'image/png','.svg':'image/svg+xml'};
 const owner=r=>{const p=r.headers['x-pin'];return p&&p.length>=4?crypto.createHash('sha256').update('org:'+p).digest('hex'):null};
 const send=(res,c,o)=>{res.writeHead(c,{'Content-Type':'application/json','Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type,X-PIN','Access-Control-Allow-Methods':'GET,POST,PUT,DELETE,OPTIONS'});res.end(JSON.stringify(o))};
 const body=r=>new Promise(ok=>{let b='';r.on('data',d=>b+=d);r.on('end',()=>{try{ok(JSON.parse(b||'{}'))}catch{ok({})}})});
@@ -50,4 +53,4 @@ http.createServer(async(req,res)=>{try{
  const h={'Content-Type':mime[path.extname(f)]||'application/octet-stream','Cache-Control':'no-cache'};
  if(f.endsWith('.apk'))h['Content-Disposition']='attachment; filename="organiseur.apk"';
  res.writeHead(200,h);fs.createReadStream(f).pipe(res);
-}catch(e){console.error(e);send(res,500,{error:'erreur serveur'})}}).listen(PORT,'0.0.0.0',()=>console.log('Organiseur on '+PORT));
+}catch(e){console.error(e);send(res,500,{error:'erreur serveur'})}}).listen(PORT,'0.0.0.0',()=>console.log('Bella Vita on '+PORT));

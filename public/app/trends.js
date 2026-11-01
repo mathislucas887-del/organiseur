@@ -309,107 +309,123 @@ window.TRENDS={
      "titre": "Les Grosses Têtes",
      "sous": "RTL · Actualités, Humour",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/fe/04/9f/fe049f64-d03c-3995-f7ed-ecd5c7bfa3fb/mza_10862868553998545135.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/les-grosses-t%C3%AAtes/id369369012"
+     "lien": "https://podcasts.apple.com/fr/podcast/les-grosses-t%C3%AAtes/id369369012",
+     "deezer": "https://www.deezer.com/fr/show/58021"
     },
     {
      "rang": 2,
      "titre": "LEGEND",
      "sous": "Guillaume Pley · Actualités, Culture et société",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/f7/6d/29/f76d2923-87f9-a3e0-6f5e-7525fabd394d/mza_1280667782715215121.jpeg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/legend/id1691740320"
+     "lien": "https://podcasts.apple.com/fr/podcast/legend/id1691740320",
+     "deezer": "https://www.deezer.com/fr/show/6125205"
     },
     {
      "rang": 3,
      "titre": "Small Talk - Konbini",
      "sous": "Konbini · Humour, Culture et société",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/7c/3a/22/7c3a22da-7419-2deb-6b5a-e22eda94700f/mza_11554841400277924103.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/small-talk-konbini/id1644493181"
+     "lien": "https://podcasts.apple.com/fr/podcast/small-talk-konbini/id1644493181",
+     "deezer": "https://www.deezer.com/fr/show/5111197"
     },
     {
      "rang": 4,
      "titre": "Profils : des récits uniques",
      "sous": "ARTE Radio · Culture et société",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/ed/a2/7e/eda27e24-c52e-55b8-e4b6-83e4aa0f51ef/mza_3147196269598423328.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/profils-des-r%C3%A9cits-uniques/id1093080425"
+     "lien": "https://podcasts.apple.com/fr/podcast/profils-des-r%C3%A9cits-uniques/id1093080425",
+     "deezer": "https://www.deezer.com/fr/show/359272"
     },
     {
      "rang": 5,
      "titre": "Affaires sensibles",
      "sous": "France Inter · Culture et société",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/63/70/8c/63708c3b-ed11-5d19-fa67-132f92e463f3/mza_8301076687401115427.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/affaires-sensibles/id912451024"
+     "lien": "https://podcasts.apple.com/fr/podcast/affaires-sensibles/id912451024",
+     "deezer": "https://www.deezer.com/fr/show/48593"
     },
     {
      "rang": 6,
      "titre": "Entrez dans l'Histoire",
      "sous": "RTL · Histoire, Actualités",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/08/ea/63/08ea63fe-95da-648c-bdcc-a5b8d194bd10/mza_634527514977132492.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/entrez-dans-lhistoire/id1583548883"
+     "lien": "https://podcasts.apple.com/fr/podcast/entrez-dans-lhistoire/id1583548883",
+     "deezer": "https://www.deezer.com/fr/show/2946282"
     },
     {
      "rang": 7,
      "titre": "L'After Foot",
      "sous": "RMC · Sports, Actualités",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/1b/62/36/1b6236c8-db2b-0fa7-8530-b1691607962a/mza_8114194240759444394.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/lafter-foot/id140644703"
+     "lien": "https://podcasts.apple.com/fr/podcast/lafter-foot/id140644703",
+     "deezer": "https://www.deezer.com/fr/show/53704"
     },
     {
      "rang": 8,
      "titre": "CHRONIQUES CRIMINELLES",
      "sous": "Jacques Pradel - TF1 · Criminologie",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/c0/35/6c/c0356c50-2cfe-7003-cf37-802e2c3153d7/mza_7700008697478933172.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/chroniques-criminelles/id1509742508"
+     "lien": "https://podcasts.apple.com/fr/podcast/chroniques-criminelles/id1509742508",
+     "deezer": "https://www.deezer.com/fr/show/1132872"
     },
     {
      "rang": 9,
      "titre": "UNBX, le podcast de la réussite",
      "sous": "Hugo Clément et Marc Simoncini · Affaires",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/ba/f2/64/baf26473-6277-736a-0fe9-cc4d64e94ccb/mza_12638857177298178013.jpeg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/unbx-le-podcast-de-la-r%C3%A9ussite/id6813632977"
+     "lien": "https://podcasts.apple.com/fr/podcast/unbx-le-podcast-de-la-r%C3%A9ussite/id6813632977",
+     "deezer": "https://www.deezer.com/fr/show/1003593722"
     },
     {
      "rang": 10,
      "titre": "L'Heure Du Crime",
      "sous": "RTL · Criminologie",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/06/93/a2/0693a211-5cef-a5ce-c788-e3e897964785/mza_9139408145449524526.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/lheure-du-crime/id389542173"
+     "lien": "https://podcasts.apple.com/fr/podcast/lheure-du-crime/id389542173",
+     "deezer": "https://www.deezer.com/fr/show/58019"
     },
     {
      "rang": 11,
      "titre": "Hondelatte Raconte",
      "sous": "Europe 1 · Criminologie, Actualités",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/9e/3a/52/9e3a52e1-31e2-7616-6329-1c376e9243da/mza_137985806042307432.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/hondelatte-raconte/id1146402624"
+     "lien": "https://podcasts.apple.com/fr/podcast/hondelatte-raconte/id1146402624",
+     "deezer": "https://www.deezer.com/fr/show/57447"
     },
     {
      "rang": 12,
      "titre": "HugoDécrypte - Actus et interviews",
      "sous": "Hugo Décrypte · Actualités",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/99/8f/f2/998ff2e2-df8b-3569-4624-13843d12c9e3/mza_14083435330052627150.jpeg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/hugod%C3%A9crypte-actus-et-interviews/id1552365367"
+     "lien": "https://podcasts.apple.com/fr/podcast/hugod%C3%A9crypte-actus-et-interviews/id1552365367",
+     "deezer": "https://www.deezer.com/fr/show/2270682"
     },
     {
      "rang": 13,
      "titre": "C dans l'air",
      "sous": "France Télévisions · Actualités, Culture et société",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/be/6d/b0/be6db039-e02a-4963-fae1-f2d139b2141f/mza_9586600214643436705.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/c-dans-lair/id1438726711"
+     "lien": "https://podcasts.apple.com/fr/podcast/c-dans-lair/id1438726711",
+     "deezer": "https://www.deezer.com/fr/show/53102"
     },
     {
      "rang": 14,
      "titre": "Les grands dossiers de l'Histoire par Franck Ferrand",
      "sous": "Radio Classique · Histoire",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/6a/a3/6f/6aa36fc5-1aba-02c8-73f8-a08559fe1d8a/mza_13732621007390675886.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/les-grands-dossiers-de-lhistoire-par-franck-ferrand/id1434297164"
+     "lien": "https://podcasts.apple.com/fr/podcast/les-grands-dossiers-de-lhistoire-par-franck-ferrand/id1434297164",
+     "deezer": "https://www.deezer.com/fr/show/58855"
     },
     {
      "rang": 15,
      "titre": "Les pieds sur terre",
      "sous": "France Culture · Culture et société",
      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/9f/ab/b1/9fabb1e0-ef8c-d78b-cd79-13225e0c2aad/mza_12414803589752471015.jpg/400x400bb.png",
-     "lien": "https://podcasts.apple.com/fr/podcast/les-pieds-sur-terre/id160879442"
+     "lien": "https://podcasts.apple.com/fr/podcast/les-pieds-sur-terre/id160879442",
+     "deezer": "https://www.deezer.com/fr/show/50799"
     }
-   ]
+   ],
+   "dest": "Deezer"
   }
  ]
 };
