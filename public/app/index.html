@@ -1,0 +1,50 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Organiseur</title><link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Organiseur"><meta name="theme-color" content="#5b4b8a">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#f6f3ee;color:#222}
+header{background:#5b4b8a;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:2}
+nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:44px;z-index:2}
+nav button{flex:none;border:0;background:none;padding:12px 12px;font-size:14px;white-space:nowrap}nav button.on{border-bottom:3px solid #5b4b8a;font-weight:600}
+main{padding:12px;max-width:800px;margin:auto}.card{background:#fff;border-radius:10px;padding:12px;margin:8px 0;box-shadow:0 1px 3px #0001}
+input,textarea,select{width:100%;padding:9px;margin:4px 0 8px;border:1px solid #ccc;border-radius:8px;font:inherit}textarea{min-height:70px}
+.btn{background:#5b4b8a;color:#fff;border:0;border-radius:8px;padding:9px 14px;font-size:14px;margin:2px}.btn.g{background:#888}.btn.r{background:#c0392b}
+.sub{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.sub button{border:1px solid #5b4b8a;background:#fff;color:#5b4b8a;border-radius:20px;padding:6px 12px}.sub button.on{background:#5b4b8a;color:#fff}
+.meta{color:#777;font-size:12px}.st{color:#f5a623}.done{text-decoration:line-through;color:#999}#msg{font-size:12px}
+</style></head><body>
+<header><b>📒 Organiseur</b><span id="msg"></span><button class="btn g" onclick="logout()">PIN</button></header>
+<nav id="tabs"></nav><main id="main"></main>
+<script>
+const API=location.origin+'/api/';
+const S=(o)=>({stars:{t:'stars',l:'Note /5'},avis:{t:'area',l:'Avis'}});
+const MEDIA=(name,statuts,extra)=>({statut:{t:'sel',l:'Statut',o:statuts},...extra,top:{t:'check',l:'⭐ Dans mes tops'},note:{t:'stars',l:'Note /5'},avis:{t:'area',l:'Avis'}});
+const T={
+journal:{n:'Journal',f:{date:{t:'date',l:'Date'},texte:{t:'area',l:'Journal du jour'},g1:{t:'text',l:'Gratitude 1'},g2:{t:'text',l:'Gratitude 2'},g3:{t:'text',l:'Gratitude 3'}},title:i=>i.date+' — '+(i.texte||'').slice(0,60)},
+reves:{n:'Rêves',f:{date:{t:'date',l:'Date'},titre:{t:'text',l:'Titre'},recit:{t:'area',l:'Récit du rêve'},emotion:{t:'text',l:'Émotions'},lucide:{t:'check',l:'Rêve lucide'}},title:i=>i.date+' — '+(i.titre||'')},
+planning:{n:'Planning',f:{vue:{t:'sel',l:'Horizon',o:['Année','Mois','Semaine','Jour']},date:{t:'date',l:'Date / début'},titre:{t:'text',l:'Objectif / événement'},heure:{t:'text',l:'Heure (optionnel)'},notes:{t:'area',l:'Notes'},fait:{t:'check',l:'Fait'}},filter:'vue',title:i=>(i.date||'')+' '+(i.heure||'')+' — '+(i.titre||'')},
+plats:{n:'Plats semaine',f:{jour:{t:'sel',l:'Jour',o:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']},repas:{t:'sel',l:'Repas',o:['Petit-déj','Déjeuner','Dîner']},plat:{t:'text',l:'Plat'},semaine:{t:'date',l:'Semaine du'}},title:i=>i.jour+' · '+i.repas+' — '+(i.plat||''),sort:(a,b)=>['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'].indexOf(a.jour)-['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'].indexOf(b.jour)},
+recettes:{n:'Recettes',f:{nom:{t:'text',l:'Nom'},categorie:{t:'sel',l:'Catégorie',o:['Entrée','Plat','Dessert','Boisson','Autre']},temps:{t:'text',l:'Temps'},portions:{t:'text',l:'Portions'},ingredients:{t:'area',l:'Ingrédients'},etapes:{t:'area',l:'Étapes'}},filter:'categorie',title:i=>i.nom},
+taches:{n:'Tâches',f:{titre:{t:'text',l:'Tâche'},echeance:{t:'date',l:'Échéance'},priorite:{t:'sel',l:'Priorité',o:['Haute','Moyenne','Basse']},fait:{t:'check',l:'Fait'}},filter:'priorite',title:i=>i.titre+(i.echeance?' ('+i.echeance+')':'')},
+livres:{n:'Livres',f:MEDIA('l',['Lu','À lire','En cours'],{titre:{t:'text',l:'Titre'},auteur:{t:'text',l:'Auteur'}}),filter:'statut',title:i=>(i.titre||'')+(i.auteur?' — '+i.auteur:'')},
+films:{n:'Films & Séries',f:MEDIA('f',['Vu','À voir','En cours'],{titre:{t:'text',l:'Titre'},genre:{t:'sel',l:'Type',o:['Film','Série']}}),filter:'statut',title:i=>(i.titre||'')+' ('+(i.genre||'')+')'},
+podcasts:{n:'Podcasts',f:MEDIA('p',['Écouté','À écouter','En cours'],{titre:{t:'text',l:'Titre / épisode'},emission:{t:'text',l:'Émission'}}),filter:'statut',title:i=>(i.titre||'')+(i.emission?' — '+i.emission:'')}
+};
+let tab='journal',items=[],flt='Tous',edit=null,pin=localStorage.pin;
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function api(m,p,b){const r=await fetch(API+p,{method:m,headers:{'Content-Type':'application/json','X-PIN':pin},body:b?JSON.stringify(b):undefined});if(r.status==401){logout();throw 0}if(!r.ok)throw new Error(r.status);return r.json()}
+function msg(t){$('#msg').textContent=t;setTimeout(()=>$('#msg').textContent='',2500)}
+function logout(){localStorage.removeItem('pin');pin=null;login()}
+function login(){$('#tabs').innerHTML='';$('#main').innerHTML=`<div class="card"><h3>Connexion</h3><p>Entrez votre code PIN (4 caractères min). Vos données sont stockées sur le serveur et liées à ce PIN : utilisez le même PIN sur tous vos appareils.</p><input id="pin" type="password" inputmode="numeric"><button class="btn" onclick="setPin()">Entrer</button></div>`}
+function setPin(){const v=$('#pin').value.trim();if(v.length<4)return alert('4 caractères minimum');localStorage.pin=pin=v;start()}
+function start(){$('#tabs').innerHTML=Object.entries(T).map(([k,v])=>`<button data-k="${k}" onclick="go('${k}')">${v.n}</button>`).join('');go(tab)}
+async function go(k){tab=k;flt='Tous';edit=null;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.k==k));$('#main').innerHTML='Chargement…';try{items=await api('GET',k);render()}catch(e){$('#main').innerHTML='<div class="card">❌ Serveur injoignable. <button class="btn" onclick="go(tab)">Réessayer</button></div>'}}
+function field(k,d,v){v=v??'';if(d.t=='area')return `<label>${d.l}<textarea name="${k}">${esc(v)}</textarea></label>`;if(d.t=='sel')return `<label>${d.l}<select name="${k}">${d.o.map(o=>`<option ${o==v?'selected':''}>${o}</option>`).join('')}</select></label>`;if(d.t=='check')return `<label><input type="checkbox" name="${k}" style="width:auto" ${v?'checked':''}> ${d.l}</label><br>`;if(d.t=='stars')return `<label>${d.l}<select name="${k}">${['',1,2,3,4,5].map(o=>`<option ${o==v?'selected':''} value="${o}">${o?'★'.repeat(o):'—'}</option>`).join('')}</select></label>`;return `<label>${d.l}<input type="${d.t=='date'?'date':'text'}" name="${k}" value="${esc(v)}"></label>`}
+function render(){const t=T[tab];let L=items.slice();if(t.filter&&flt!='Tous')L=L.filter(i=>flt=='⭐ Tops'?i.top:i[t.filter]==flt);if(t.sort)L.sort(t.sort);
+const opts=t.filter?['Tous',...t.f[t.filter].o,...(t.f.top?['⭐ Tops']:[])]:[];
+const cur=edit?(edit=='new'?{date:new Date().toISOString().slice(0,10)}:items.find(i=>i.id==edit)):null;
+$('#main').innerHTML=(opts.length?`<div class="sub">${opts.map(o=>`<button class="${o==flt?'on':''}" onclick="flt='${o}';render()">${o}</button>`).join('')}</div>`:'')+
+(cur?`<div class="card"><form id="f">${Object.entries(t.f).map(([k,d])=>field(k,d,cur[k])).join('')}</form><button class="btn" onclick="save()">💾 Enregistrer</button><button class="btn g" onclick="edit=null;render()">Annuler</button>${edit!='new'?'<button class="btn r" onclick="del()">Supprimer</button>':''}</div>`:`<button class="btn" onclick="edit='new';render()">＋ Ajouter</button>`)+
+L.map(i=>`<div class="card" onclick="edit='${i.id}';render();scrollTo(0,0)"><b class="${i.fait?'done':''}">${esc(t.title(i))}</b> ${i.top?'⭐':''} ${i.note?`<span class="st">${'★'.repeat(i.note)}</span>`:''}${i.statut?`<div class="meta">${esc(i.statut)}</div>`:''}${i.vue?`<div class="meta">${esc(i.vue)}</div>`:''}${i.g1?`<div class="meta">🙏 ${esc([i.g1,i.g2,i.g3].filter(Boolean).join(' · '))}</div>`:''}${i.avis?`<div class="meta">${esc(i.avis.slice(0,120))}</div>`:''}</div>`).join('')+(L.length?'':'<p class="meta">Aucun élément.</p>')}
+async function save(){const d={};const f=$('#f');Object.entries(T[tab].f).forEach(([k,x])=>{const e=f.elements[k];d[k]=x.t=='check'?e.checked:x.t=='stars'?(+e.value||''):e.value});if(edit=='new'&&T[tab].filter&&flt!='Tous'&&flt!='⭐ Tops'&&!d[T[tab].filter])d[T[tab].filter]=flt;
+try{if(edit=='new')items.unshift(await api('POST',tab,d));else{await api('PUT',tab+'/'+edit,d);Object.assign(items.find(i=>i.id==edit),d)}edit=null;render();msg('✅ Sauvegardé sur le serveur')}catch(e){alert('Échec de sauvegarde: serveur injoignable')}}
+async function del(){if(!confirm('Supprimer ?'))return;await api('DELETE',tab+'/'+edit);items=items.filter(i=>i.id!=edit);edit=null;render();msg('Supprimé')}
+pin?start():login();
+</script></body></html>
