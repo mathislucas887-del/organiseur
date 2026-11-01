@@ -16,7 +16,7 @@ if(process.env.DATABASE_URL){
  store={kind:'sqlite',list:async(o,t)=>db.prepare('SELECT id,data,created,updated FROM items WHERE owner=? AND type=? ORDER BY created DESC').all(o,t),
   insert:async(id,o,t,d,n)=>db.prepare('INSERT INTO items VALUES(?,?,?,?,?,?)').run(id,o,t,d,n,n),
   update:async(id,o,t,d,n)=>db.prepare('UPDATE items SET data=?,updated=? WHERE id=? AND owner=? AND type=?').run(d,n,id,o,t).changes,
-  del:async(id,o)=>await store.del(id,o),ping:async()=>1};
+  del:async(id,o)=>db.prepare("DELETE FROM items WHERE id=? AND owner=?").run(id,o).changes,ping:async()=>1};
 }
 let podCache={t:0,d:null};const dzCache={};const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
 async function deezer(t){if(dzCache[t])return dzCache[t];let u='https://www.deezer.com/fr/search/'+encodeURIComponent(t)+'/show';
