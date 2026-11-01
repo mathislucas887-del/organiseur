@@ -1,21 +1,50 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Organiseur</title><link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Organiseur"><meta name="theme-color" content="#5b4b8a">
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Organiseur</title><link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Organiseur"><meta name="theme-color" content="#faf8f5">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#f6f3ee;color:#222}
-header{background:#5b4b8a;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:2}
-nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:44px;z-index:2}
-nav button{flex:none;border:0;background:none;padding:12px 12px;font-size:14px;white-space:nowrap}nav button.on{border-bottom:3px solid #5b4b8a;font-weight:600}
-main{padding:12px;max-width:800px;margin:auto}.card{background:#fff;border-radius:10px;padding:12px;margin:8px 0;box-shadow:0 1px 3px #0001}
-input,textarea,select{width:100%;padding:9px;margin:4px 0 8px;border:1px solid #ccc;border-radius:8px;font:inherit}textarea{min-height:70px}
-.btn{background:#5b4b8a;color:#fff;border:0;border-radius:8px;padding:9px 14px;font-size:14px;margin:2px}.btn.g{background:#888}.btn.r{background:#c0392b}
-.sub{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.sub button{border:1px solid #5b4b8a;background:#fff;color:#5b4b8a;border-radius:20px;padding:6px 12px}.sub button.on{background:#5b4b8a;color:#fff}
-.meta{color:#777;font-size:12px}.st{color:#f5a623}.done{text-decoration:line-through;color:#999}#msg{font-size:12px}
+:root{--bg:#faf8f5;--card:#fff;--ink:#1d1c1a;--mute:#8a857d;--line:#ece8e1;--acc:#2f4a3f;--acc2:#e9efe9;--gold:#b8893b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font:15px/1.55 Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+header{padding:calc(22px + env(safe-area-inset-top)) 22px 4px;display:flex;justify-content:space-between;align-items:flex-end;max-width:760px;margin:auto}
+header b{font:600 28px/1 Fraunces,Georgia,serif;letter-spacing:-.02em}.d{display:block;font:500 12px Inter;color:var(--mute);margin-bottom:6px;text-transform:capitalize}
+.lock{background:none;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:500 12px Inter}
+nav{display:flex;gap:4px;overflow-x:auto;padding:12px 22px;position:sticky;top:0;z-index:3;background:rgba(250,248,245,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);scrollbar-width:none;max-width:760px;margin:auto}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;border:0;background:none;color:var(--mute);padding:8px 14px;border-radius:999px;font:500 14px Inter;transition:.25s}
+nav button.on{background:var(--ink);color:#fff}
+main{padding:6px 22px 110px;max-width:760px;margin:auto}
+.fade{animation:fade .4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h2{font:600 32px/1.12 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:14px 0 6px}.lead{color:var(--mute);margin:0 0 24px}
+h3{font:600 11px Inter;text-transform:uppercase;letter-spacing:.12em;color:var(--mute);margin:30px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:10px 0;transition:transform .2s,box-shadow .25s;cursor:pointer}
+.card:active{transform:scale(.99)}@media(hover:hover){.card:hover{box-shadow:0 10px 30px -14px rgba(0,0,0,.15)}}
+.card b{font-weight:600}.form{cursor:default}.form:active{transform:none}
+label{display:block;font:500 12px Inter;color:var(--mute)}
+input,textarea,select{width:100%;padding:12px 14px;margin:6px 0 16px;border:1px solid var(--line);border-radius:12px;font:15px Inter;background:var(--bg);color:var(--ink);transition:border .2s,background .2s;-webkit-appearance:none}
+input:focus,textarea:focus,select:focus{outline:0;border-color:var(--acc);background:#fff}textarea{min-height:110px;resize:vertical}
+input[type=checkbox]{width:20px;height:20px;margin:0 8px 14px 0;vertical-align:middle;-webkit-appearance:checkbox;accent-color:var(--acc)}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:999px;padding:11px 20px;font:500 14px Inter;margin:4px 6px 0 0;cursor:pointer;transition:.2s}
+.btn:active{transform:scale(.96)}.btn.g{background:var(--acc2);color:var(--acc)}.btn.r{background:none;color:#b4442f}
+.add{position:fixed;right:22px;bottom:calc(26px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:50%;font-size:28px;font-weight:300;padding:0;margin:0;box-shadow:0 12px 30px -8px rgba(47,74,63,.55);z-index:4}
+.sub{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}.sub button{border:1px solid var(--line);background:none;color:var(--ink);border-radius:999px;padding:7px 14px;font:500 13px Inter;transition:.2s}
+.sub button.on{background:var(--acc2);border-color:var(--acc2);color:var(--acc)}
+.meta{color:var(--mute);font-size:13px;margin-top:4px}.st{color:var(--gold);letter-spacing:2px;font-size:13px}.done{text-decoration:line-through;color:var(--mute)}
+.pill{display:inline-block;font:500 11px Inter;color:var(--acc);background:var(--acc2);border-radius:999px;padding:2px 9px;margin-right:6px}
+#msg{position:fixed;left:50%;bottom:34px;transform:translate(-50%,10px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:.3s;z-index:5;pointer-events:none}#msg.show{opacity:1;transform:translate(-50%,0)}
+.trend{display:flex;gap:12px;overflow-x:auto;margin:0 -22px;padding:4px 22px 12px;scroll-snap-type:x mandatory;scroll-padding:0 22px;scrollbar-width:none}.trend::-webkit-scrollbar{display:none}
+.tc{flex:none;width:168px;scroll-snap-align:start;background:linear-gradient(165deg,#fff,#f4efe6);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;min-height:180px}
+.tc .n{font:600 36px/1 Fraunces,Georgia,serif;color:var(--gold)}.tc .t{font-weight:600;font-size:14px;line-height:1.3;margin:12px 0 3px}.tc .a{color:var(--mute);font-size:12px;flex:1}
+.tc button{margin-top:12px;align-self:flex-start;border:0;background:var(--acc2);color:var(--acc);border-radius:999px;padding:6px 12px;font:500 12px Inter}.tc button:disabled{opacity:.5}
+.src{font-size:12px;color:var(--mute)}.src a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc2)}
+.empty{color:var(--mute);text-align:center;padding:48px 0;font-size:14px}
+.login{max-width:360px;margin:14vh auto 0;text-align:center}.login h2{font-size:38px}.login input{text-align:center;font-size:24px;letter-spacing:.5em}
 </style></head><body>
-<header><b>📒 Organiseur</b><span id="msg"></span><button class="btn g" onclick="logout()">PIN</button></header>
-<nav id="tabs"></nav><main id="main"></main>
-<script>
+<header><div><span class="d" id="today"></span><b>Organiseur</b></div><button class="lock" onclick="logout()">Verrouiller</button></header>
+<nav id="tabs"></nav><main id="main"></main><div id="msg"></div>
+<script src="trends.js"></script><script>
 const API=location.origin+'/api/';
 const S=(o)=>({stars:{t:'stars',l:'Note /5'},avis:{t:'area',l:'Avis'}});
-const MEDIA=(name,statuts,extra)=>({statut:{t:'sel',l:'Statut',o:statuts},...extra,top:{t:'check',l:'⭐ Dans mes tops'},note:{t:'stars',l:'Note /5'},avis:{t:'area',l:'Avis'}});
+const MEDIA=(name,statuts,extra)=>({statut:{t:'sel',l:'Statut',o:statuts},...extra,top:{t:'check',l:'Dans mes tops du moment'},note:{t:'stars',l:'Note /5'},avis:{t:'area',l:'Avis'}});
 const T={
 journal:{n:'Journal',f:{date:{t:'date',l:'Date'},texte:{t:'area',l:'Journal du jour'},g1:{t:'text',l:'Gratitude 1'},g2:{t:'text',l:'Gratitude 2'},g3:{t:'text',l:'Gratitude 3'}},title:i=>i.date+' — '+(i.texte||'').slice(0,60)},
 reves:{n:'Rêves',f:{date:{t:'date',l:'Date'},titre:{t:'text',l:'Titre'},recit:{t:'area',l:'Récit du rêve'},emotion:{t:'text',l:'Émotions'},lucide:{t:'check',l:'Rêve lucide'}},title:i=>i.date+' — '+(i.titre||'')},
@@ -27,24 +56,38 @@ livres:{n:'Livres',f:MEDIA('l',['Lu','À lire','En cours'],{titre:{t:'text',l:'T
 films:{n:'Films & Séries',f:MEDIA('f',['Vu','À voir','En cours'],{titre:{t:'text',l:'Titre'},genre:{t:'sel',l:'Type',o:['Film','Série']}}),filter:'statut',title:i=>(i.titre||'')+' ('+(i.genre||'')+')'},
 podcasts:{n:'Podcasts',f:MEDIA('p',['Écouté','À écouter','En cours'],{titre:{t:'text',l:'Titre / épisode'},emission:{t:'text',l:'Émission'}}),filter:'statut',title:i=>(i.titre||'')+(i.emission?' — '+i.emission:'')}
 };
-let tab='journal',items=[],flt='Tous',edit=null,pin=localStorage.pin;
-const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LEAD={journal:'Raconter sa journée, garder trois gratitudes.',reves:'Noter ses rêves au réveil.',planning:"L'année, le mois, la semaine, le jour.",plats:'Le menu de la semaine.',recettes:'Vos recettes, à portée de main.',taches:"Ce qu'il reste à faire.",livres:'Lus, à lire — et ce qui se lit en ce moment.',films:'Vus, à voir — et les tendances.',podcasts:'Écoutés, à écouter — et les tendances.'};
+const TODO={livres:'À lire',films:'À voir',podcasts:'À écouter'};
+let tab=localStorage.tab||'journal',items=[],flt='Tous',edit=null,pin=localStorage.pin;
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('#today').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
 async function api(m,p,b){const r=await fetch(API+p,{method:m,headers:{'Content-Type':'application/json','X-PIN':pin},body:b?JSON.stringify(b):undefined});if(r.status==401){logout();throw 0}if(!r.ok)throw new Error(r.status);return r.json()}
-function msg(t){$('#msg').textContent=t;setTimeout(()=>$('#msg').textContent='',2500)}
+function msg(t){const e=$('#msg');e.textContent=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),2200)}
 function logout(){localStorage.removeItem('pin');pin=null;login()}
-function login(){$('#tabs').innerHTML='';$('#main').innerHTML=`<div class="card"><h3>Connexion</h3><p>Entrez votre code PIN (4 caractères min). Vos données sont stockées sur le serveur et liées à ce PIN : utilisez le même PIN sur tous vos appareils.</p><input id="pin" type="password" inputmode="numeric"><button class="btn" onclick="setPin()">Entrer</button></div>`}
-function setPin(){const v=$('#pin').value.trim();if(v.length<4)return alert('4 caractères minimum');localStorage.pin=pin=v;start()}
+function login(){$('#tabs').innerHTML='';$('#main').innerHTML=`<div class="login fade"><h2>Bonjour.</h2><p class="lead">Entrez votre code (4 caractères min.). Vos données sont gardées sur le serveur, retrouvez-les partout avec le même code.</p><input id="pin" type="password" inputmode="numeric" autocomplete="off" onkeydown="if(event.key=='Enter')setPin()"><button class="btn" onclick="setPin()">Entrer</button></div>`;setTimeout(()=>$('#pin')?.focus(),50)}
+function setPin(){const v=$('#pin').value.trim();if(v.length<4)return msg('4 caractères minimum');localStorage.pin=pin=v;start()}
 function start(){$('#tabs').innerHTML=Object.entries(T).map(([k,v])=>`<button data-k="${k}" onclick="go('${k}')">${v.n}</button>`).join('');go(tab)}
-async function go(k){tab=k;flt='Tous';edit=null;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.k==k));$('#main').innerHTML='Chargement…';try{items=await api('GET',k);render()}catch(e){$('#main').innerHTML='<div class="card">❌ Serveur injoignable. <button class="btn" onclick="go(tab)">Réessayer</button></div>'}}
-function field(k,d,v){v=v??'';if(d.t=='area')return `<label>${d.l}<textarea name="${k}">${esc(v)}</textarea></label>`;if(d.t=='sel')return `<label>${d.l}<select name="${k}">${d.o.map(o=>`<option ${o==v?'selected':''}>${o}</option>`).join('')}</select></label>`;if(d.t=='check')return `<label><input type="checkbox" name="${k}" style="width:auto" ${v?'checked':''}> ${d.l}</label><br>`;if(d.t=='stars')return `<label>${d.l}<select name="${k}">${['',1,2,3,4,5].map(o=>`<option ${o==v?'selected':''} value="${o}">${o?'★'.repeat(o):'—'}</option>`).join('')}</select></label>`;return `<label>${d.l}<input type="${d.t=='date'?'date':'text'}" name="${k}" value="${esc(v)}"></label>`}
-function render(){const t=T[tab];let L=items.slice();if(t.filter&&flt!='Tous')L=L.filter(i=>flt=='⭐ Tops'?i.top:i[t.filter]==flt);if(t.sort)L.sort(t.sort);
-const opts=t.filter?['Tous',...t.f[t.filter].o,...(t.f.top?['⭐ Tops']:[])]:[];
-const cur=edit?(edit=='new'?{date:new Date().toISOString().slice(0,10)}:items.find(i=>i.id==edit)):null;
-$('#main').innerHTML=(opts.length?`<div class="sub">${opts.map(o=>`<button class="${o==flt?'on':''}" onclick="flt='${o}';render()">${o}</button>`).join('')}</div>`:'')+
-(cur?`<div class="card"><form id="f">${Object.entries(t.f).map(([k,d])=>field(k,d,cur[k])).join('')}</form><button class="btn" onclick="save()">💾 Enregistrer</button><button class="btn g" onclick="edit=null;render()">Annuler</button>${edit!='new'?'<button class="btn r" onclick="del()">Supprimer</button>':''}</div>`:`<button class="btn" onclick="edit='new';render()">＋ Ajouter</button>`)+
-L.map(i=>`<div class="card" onclick="edit='${i.id}';render();scrollTo(0,0)"><b class="${i.fait?'done':''}">${esc(t.title(i))}</b> ${i.top?'⭐':''} ${i.note?`<span class="st">${'★'.repeat(i.note)}</span>`:''}${i.statut?`<div class="meta">${esc(i.statut)}</div>`:''}${i.vue?`<div class="meta">${esc(i.vue)}</div>`:''}${i.g1?`<div class="meta">🙏 ${esc([i.g1,i.g2,i.g3].filter(Boolean).join(' · '))}</div>`:''}${i.avis?`<div class="meta">${esc(i.avis.slice(0,120))}</div>`:''}</div>`).join('')+(L.length?'':'<p class="meta">Aucun élément.</p>')}
-async function save(){const d={};const f=$('#f');Object.entries(T[tab].f).forEach(([k,x])=>{const e=f.elements[k];d[k]=x.t=='check'?e.checked:x.t=='stars'?(+e.value||''):e.value});if(edit=='new'&&T[tab].filter&&flt!='Tous'&&flt!='⭐ Tops'&&!d[T[tab].filter])d[T[tab].filter]=flt;
-try{if(edit=='new')items.unshift(await api('POST',tab,d));else{await api('PUT',tab+'/'+edit,d);Object.assign(items.find(i=>i.id==edit),d)}edit=null;render();msg('✅ Sauvegardé sur le serveur')}catch(e){alert('Échec de sauvegarde: serveur injoignable')}}
-async function del(){if(!confirm('Supprimer ?'))return;await api('DELETE',tab+'/'+edit);items=items.filter(i=>i.id!=edit);edit=null;render();msg('Supprimé')}
+async function go(k){tab=localStorage.tab=k;flt='Tous';edit=null;document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('on',b.dataset.k==k);if(b.dataset.k==k)b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})});$('#main').innerHTML=`<h2 class="fade">${T[k].n}</h2><p class="lead">Chargement…</p>`;try{items=await api('GET',k);render(true)}catch(e){$('#main').innerHTML=`<h2>${T[k].n}</h2><div class="empty">Serveur injoignable (il se réveille peut-être, ~30 s).<br><br><button class="btn g" onclick="go(tab)">Réessayer</button></div>`}}
+function field(k,d,v){v=v??'';if(d.t=='area')return `<label>${d.l}<textarea name="${k}">${esc(v)}</textarea></label>`;if(d.t=='sel')return `<label>${d.l}<select name="${k}">${d.o.map(o=>`<option ${o==v?'selected':''}>${o}</option>`).join('')}</select></label>`;if(d.t=='check')return `<label style="color:var(--ink);font-size:14px"><input type="checkbox" name="${k}" ${v?'checked':''}>${d.l}</label>`;if(d.t=='stars')return `<label>${d.l}<select name="${k}">${['',1,2,3,4,5].map(o=>`<option ${o==v?'selected':''} value="${o}">${o?'★'.repeat(o):'—'}</option>`).join('')}</select></label>`;return `<label>${d.l}<input type="${d.t=='date'?'date':'text'}" name="${k}" value="${esc(v)}"></label>`}
+const has=t=>items.some(i=>(i.titre||'').toLowerCase()==t.toLowerCase());
+function trends(){const tr=window.TRENDS&&TRENDS[tab];if(!tr)return'';
+ const cards=tr.items.length?`<div class="trend">${tr.items.map(([t,a],n)=>`<div class="tc fade" style="animation-delay:${n*40}ms"><div class="n">${n+1}</div><div class="t">${esc(t)}</div><div class="a">${esc(a)}</div><button ${has(t)?'disabled':''} onclick='addTrend(${JSON.stringify(t)},${JSON.stringify(a)})'>${has(t)?'Ajouté ✓':'＋ '+TODO[tab]}</button></div>`).join('')}</div>`:'<div class="card form" style="cursor:default"><span class="meta">Le classement change chaque semaine — consultez-le puis ajoutez vos envies avec ＋.</span></div>';
+ return `<h3>En ce moment</h3>${cards}<div class="src">Source : <a href="${tr.url}" target="_blank" rel="noopener">${tr.source}</a>${tr.maj?' · relevé du '+tr.maj:''}</div>`}
+async function addTrend(t,a){const d={titre:t,statut:TODO[tab]};if(tab=='livres')d.auteur=a;if(tab=='films')d.genre=a||'Film';if(tab=='podcasts')d.emission=a;try{items.unshift(await api('POST',tab,d));render();msg('Ajouté à « '+TODO[tab]+' »')}catch(e){msg('Échec : serveur injoignable')}}
+function card(i,t,n){return `<div class="card fade" style="animation-delay:${Math.min(n,8)*30}ms" onclick="edit='${i.id}';render();scrollTo({top:0,behavior:'smooth'})"><b class="${i.fait?'done':''}">${esc(t.title(i))}</b>${i.note?` <span class="st">${'★'.repeat(i.note)}</span>`:''}<div class="meta">${i.top?'<span class="pill">Top du moment</span>':''}${i.statut?`<span class="pill">${esc(i.statut)}</span>`:''}${i.vue?`<span class="pill">${esc(i.vue)}</span>`:''}${i.priorite?`<span class="pill">${esc(i.priorite)}</span>`:''}</div>${i.g1?`<div class="meta">${esc([i.g1,i.g2,i.g3].filter(Boolean).join(' · '))}</div>`:''}${i.avis?`<div class="meta">« ${esc(i.avis.slice(0,140))} »</div>`:''}${i.texte&&!i.g1?'':''}</div>`}
+function render(anim){const t=T[tab];let L=items.slice();const tops=flt=='Tops';
+ if(t.filter&&flt!='Tous')L=L.filter(i=>tops?i.top:i[t.filter]==flt);if(t.sort)L.sort(t.sort);if(tops)L.sort((a,b)=>(b.note||0)-(a.note||0));
+ const opts=t.filter?['Tous',...t.f[t.filter].o,...(t.f.top?['Tops']:[])]:[];
+ const cur=edit?(edit=='new'?{date:new Date().toISOString().slice(0,10)}:items.find(i=>i.id==edit)):null;
+ let h=`<h2 class="${anim?'fade':''}">${t.n}</h2><p class="lead">${LEAD[tab]}</p>`;
+ if(cur)h+=`<div class="card form fade"><form id="f" onsubmit="return false">${Object.entries(t.f).map(([k,d])=>field(k,d,cur[k])).join('')}</form><button class="btn" onclick="save()">Enregistrer</button><button class="btn g" onclick="edit=null;render()">Annuler</button>${edit!='new'?'<button class="btn r" onclick="del()">Supprimer</button>':''}</div>`;
+ else{ if(opts.length)h+=`<div class="sub">${opts.map(o=>`<button class="${o==flt?'on':''}" onclick="flt='${o}';render()">${o=='Tops'?'Mes tops':o}</button>`).join('')}</div>`;
+  if(TODO[tab]&&(flt=='Tous'||tops))h+=trends()+'<h3>'+(tops?'Mes tops du moment':'Ma liste')+'</h3>';
+  h+=L.map((i,n)=>card(i,t,n)).join('')||`<div class="empty">${tops?'Marquez un titre « Dans mes tops du moment » pour le voir ici.':'Rien pour l’instant. Touchez ＋ pour commencer.'}</div>`;
+  h+=`<button class="btn add" aria-label="Ajouter" onclick="edit='new';render();scrollTo({top:0,behavior:'smooth'})">＋</button>`}
+ $('#main').innerHTML=h}
+async function save(){const d={};const f=$('#f');Object.entries(T[tab].f).forEach(([k,x])=>{const e=f.elements[k];d[k]=x.t=='check'?e.checked:x.t=='stars'?(+e.value||''):e.value});
+ try{if(edit=='new')items.unshift(await api('POST',tab,d));else{await api('PUT',tab+'/'+edit,d);Object.assign(items.find(i=>i.id==edit),d)}edit=null;render();msg('Enregistré')}catch(e){msg('Échec : serveur injoignable')}}
+async function del(){if(!confirm('Supprimer cet élément ?'))return;await api('DELETE',tab+'/'+edit);items=items.filter(i=>i.id!=edit);edit=null;render();msg('Supprimé')}
 pin?start():login();
 </script></body></html>
