@@ -18,6 +18,11 @@ if(process.env.DATABASE_URL){
   update:async(id,o,t,d,n)=>db.prepare('UPDATE items SET data=?,updated=? WHERE id=? AND owner=? AND type=?').run(d,n,id,o,t).changes,
   del:async(id,o)=>await store.del(id,o),ping:async()=>1};
 }
+let podCache={t:0,d:null};
+async function podTrends(){if(podCache.d&&Date.now()-podCache.t<6*3600e3)return podCache.d;
+ const r=await fetch('https://rss.marketingtools.apple.com/api/v2/fr/podcasts/top/15/podcasts.json');if(!r.ok)throw new Error(r.status);const j=await r.json();
+ const items=j.feed.results.map((x,i)=>({rang:i+1,titre:x.name,sous:x.artistName+' · '+(x.genres||[]).map(g=>g.name).slice(0,2).join(', '),cover:(x.artworkUrl100||'').replace('100x100bb','400x400bb'),lien:x.url}));
+ podCache={t:Date.now(),d:{maj:new Date(j.feed.updated).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}),items}};return podCache.d}
 const PORT=process.env.PORT||8080, PUB=path.join(__dirname,'public');
 const TYPES=['journal','reves','planning','plats','recettes','taches','livres','films','podcasts'];
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.apk':'application/vnd.android.package-archive','.json':'application/json','.png':'image/png'};
@@ -28,6 +33,7 @@ http.createServer(async(req,res)=>{try{
  const u=new URL(req.url,'http://x');let p=u.pathname;
  if(req.method==='OPTIONS')return send(res,204,{});
  if(p.startsWith('/api/')){
+  if(p==='/api/trends/podcasts'){try{return send(res,200,await podTrends())}catch(e){return send(res,502,{error:'indisponible'})}}
   if(p==='/api/health'){try{await store.ping();return send(res,200,{ok:true,db:store.kind})}catch(e){return send(res,503,{ok:false})}}
   const o=owner(req);if(!o)return send(res,401,{error:'PIN requis (4+ caractères)'});
   const [,,type,id]=p.split('/');if(!TYPES.includes(type))return send(res,404,{error:'type inconnu'});
