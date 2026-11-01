@@ -4,9 +4,11 @@ services:
     runtime: node
     plan: free
     region: frankfurt
-    buildCommand: "true"
+    buildCommand: npm install
     startCommand: node server.js
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - key: DATABASE_URL
+        sync: false
