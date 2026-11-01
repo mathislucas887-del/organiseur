@@ -37,7 +37,7 @@ async function podTrends(){if(podCache.d&&Date.now()-podCache.t<6*3600e3)return 
  for(const it of items)it.deezer=await deezer(it.titre);
  podCache={t:Date.now(),d:{maj:new Date(j.feed.updated).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}),items}};return podCache.d}
 const PORT=process.env.PORT||8080, PUB=path.join(__dirname,'public');
-const TYPES=['journal','reves','planning','plats','recettes','taches','livres','films','podcasts'];
+const TYPES=['titres','journal','reves','planning','plats','recettes','taches','livres','films','podcasts'];
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.apk':'application/vnd.android.package-archive','.json':'application/json','.png':'image/png','.svg':'image/svg+xml'};
 const owner=r=>{const p=r.headers['x-pin'];return p&&p.length>=4?crypto.createHash('sha256').update('org:'+p).digest('hex'):null};
 const send=(res,c,o)=>{res.writeHead(c,{'Content-Type':'application/json','Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type,X-PIN','Access-Control-Allow-Methods':'GET,POST,PUT,DELETE,OPTIONS'});res.end(JSON.stringify(o))};
