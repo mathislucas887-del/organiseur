@@ -43,7 +43,7 @@ const owner=r=>{const p=r.headers['x-pin'];return p&&p.length>=4?crypto.createHa
 const send=(res,c,o)=>{res.writeHead(c,{'Content-Type':'application/json','Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type,X-PIN','Access-Control-Allow-Methods':'GET,POST,PUT,DELETE,OPTIONS'});res.end(JSON.stringify(o))};
 const MAXF=25*1024*1024,QUOTA=350*1024*1024;
 const raw=(r,max)=>new Promise((ok,ko)=>{if(+r.headers['content-length']>max){r.resume();return ko(new Error('trop gros'))}const a=[];let n=0,big=0;r.on('data',d=>{n+=d.length;if(n>max)big=1;else a.push(d)});r.on('end',()=>big?ko(new Error('trop gros')):ok(Buffer.concat(a)));r.on('error',ko)});
-const mids=d=>{try{return (JSON.parse(d).medias||[]).flatMap(m=>[m.id,m.poster]).filter(Boolean)}catch{return[]}};
+const mids=d=>{try{const j=JSON.parse(d);return [...(j.medias||[]).flatMap(m=>[m.id,m.poster]),j.photoId].filter(Boolean)}catch{return[]}};
 async function sendMedia(req,res,id){const m=/^[0-9a-f-]{36}$/.test(id)&&await store.mget(id);if(!m){res.writeHead(404);return res.end()}
  const b=m.data,L=b.length,rg=/bytes=(\d*)-(\d*)/.exec(req.headers.range||'');const h={'Content-Type':m.mime,'Accept-Ranges':'bytes','Cache-Control':'private, max-age=31536000, immutable'};
  if(rg){let s=rg[1]?+rg[1]:L-+rg[2],e=rg[1]&&rg[2]?Math.min(+rg[2],L-1):L-1;if(s>=L||s<0){res.writeHead(416,{'Content-Range':'bytes */'+L});return res.end()}
